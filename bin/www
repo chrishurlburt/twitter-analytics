@@ -3,7 +3,6 @@
 /**
  * Module dependencies.
  */
-let env = require('dotenv').config();
 var app = require('../app');
 var debug = require('debug')('real-time-sockets:server');
 var http = require('http');
@@ -19,36 +18,7 @@ app.set('port', port);
  * Create HTTP server.
  */
 var server = http.createServer(app);
-
-/**
-* Create socket server
-*/
-let io = require('socket.io')(server)
 server.listen(3000)
-
-io.on('connection', (socket) => {
-  socket.emit('connected', {hello: 'world'})
-})
-
-const Twitter = require('node-tweet-stream');
-
-let t = new Twitter({
-  consumer_key: env.TWITTER_CONSUMER_KEY,
-  consumer_secret: env.TWITTER_CONSUMER_SECRET,
-  token: env.TWITTER_TOKEN,
-  token_secret: env.TWITTER_TOKEN_SECRET,
-})
-
-t.on('tweet', (tweet) => {
-  console.log('tweet received', tweet)
-  io.emit('tweet', tweet)
-})
-
-t.on('error', function (err) {
-  console.log('Oh no')
-})
-
-// t.track('olympics')
 
 /**
  * Listen on provided port, on all network interfaces.
