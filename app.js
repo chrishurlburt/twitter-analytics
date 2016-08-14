@@ -19,7 +19,10 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'client')));
+
+
+app.set('view engine', 'html');
 
 app.use('/', routes);
 
@@ -27,7 +30,7 @@ app.use('/', routes);
 io.listen(3001);
 
 // Set keyword
-twitter.track('olympics')
+twitter.track('trump')
 
 // Real-time sentiment analysis (-1 to 1)
 twitter.on('tweet', (tweet) => {
