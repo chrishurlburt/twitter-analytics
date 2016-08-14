@@ -34,8 +34,13 @@ twitter.track('trump')
 
 // Real-time sentiment analysis (-1 to 1)
 twitter.on('tweet', (tweet) => {
-  let score = analyzer.tweet(tweet.text)
-  if (score) io.emit('score', score)
+  analyzer.tweet(tweet.text).then((score) => {
+    // TODO: lots of 0's being returned... could be because of retweeted tweets.
+    // need some way to weigh tweets that are retweeted more... multiplier?
+    if (score != 0) io.emit('score', score)
+  }).catch((err) => {
+    console.log(err)
+  })
 })
 
 twitter.on('error', function (err) {

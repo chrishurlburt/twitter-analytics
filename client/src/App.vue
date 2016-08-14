@@ -2,7 +2,6 @@
   <div id="app">
     <div id="chart_div"></div>
     <h1>{{ score }}</h1>
-    <h1>Analyzing Sentiment for keyword: 'trump'</h1>
   </div>
 </template>
 
@@ -36,8 +35,8 @@ export default {
         width: 16000, height: 480,
         min: -1, max: 1,
         majorTicks: ['Neg', 'Neutral', 'Pos'],
-        redFrom: -1, redTo: -.2,
-        greenFrom: .2, greenTo:1,
+        redFrom: -1, redTo: -.1,
+        greenFrom: .1, greenTo:1,
         yellowFrom:75, yellowTo: 90,
         minorTicks: 10,
       }
@@ -58,7 +57,6 @@ export default {
           ['Label', 'Value'],
           ['Sentiment', this.score]
         ]), this.chart_options)
-
     });
 
   }
