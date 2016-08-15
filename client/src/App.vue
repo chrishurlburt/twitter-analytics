@@ -33,12 +33,11 @@ export default {
 
       this.chart_options = {
         width: 16000, height: 480,
-        min: -1, max: 1,
+        min: -5, max: 5,
         majorTicks: ['Neg', 'Neutral', 'Pos'],
-        redFrom: -1, redTo: -.1,
-        greenFrom: .1, greenTo:1,
-        yellowFrom:75, yellowTo: 90,
-        minorTicks: 10,
+        redFrom: -5, redTo: -.5,
+        greenFrom: .5, greenTo: 5,
+        minorTicks: 20,
       }
 
       this.chart = new google.visualization.Gauge(document.getElementById('chart_div'))
@@ -49,6 +48,7 @@ export default {
 
     // connect to socket endpoint
     const socket = io.connect('http://localhost:3001');
+
     socket.on('score', (data) => {
       console.log(data);
       this.score = data;

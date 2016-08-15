@@ -6,7 +6,6 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const sentiment = require('sentiment')
 const twitter = require('./lib/twitter')
 const analyzer = require('./lib/analyzer')
 const io = require('socket.io')()
@@ -21,8 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'client')));
 
-
-app.set('view engine', 'html');
+app.set('view engine', 'jade');
 
 app.use('/', routes);
 
@@ -30,18 +28,21 @@ app.use('/', routes);
 io.listen(3001);
 
 // Set keyword
-twitter.track('trump')
+twitter.track('olympics')
 
-// Real-time sentiment analysis (-1 to 1)
-twitter.on('tweet', (tweet) => {
-  analyzer.tweet(tweet.text).then((score) => {
-    // TODO: lots of 0's being returned... could be because of retweeted tweets.
-    // need some way to weigh tweets that are retweeted more... multiplier?
-    if (score != 0) io.emit('score', score)
-  }).catch((err) => {
-    console.log(err)
+// Real-time sentiment analysis
+io.on('connection', (socket) => {
+  twitter.on('tweet', (tweet) => {
+    analyzer.tweet(tweet.text).then((score) => {
+      // getting lots of 0's, likely because of retweets...
+      // need to compensate for this somehow. ignoring them for now
+      if (score != 0) io.emit('score', score)
+    }).catch((err) => {
+      console.log(err)
+    })
   })
 })
+
 
 twitter.on('error', function (err) {
   console.log('error')
