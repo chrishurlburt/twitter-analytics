@@ -36,7 +36,10 @@ io.on('connection', (socket) => {
     analyzer.tweet(tweet.text).then((score) => {
       // getting lots of 0's, likely because of retweets...
       // need to compensate for this somehow. ignoring them for now
-      if (score != 0) io.emit('score', score)
+      if (score != 0) io.emit('score', {
+        tweet: tweet.text,
+        score: score
+      })
     }).catch((err) => {
       console.log(err)
     })
