@@ -1,11 +1,10 @@
 <template>
   <div id="app">
     <div id="chart_div"></div>
-
+      <h2>Average Sentiment (Last Minute): {{ avg_sent_min }}</h2>
       <input type="text" v-model="term" />
       <button @click="openSocket">Start</button>
       <button @click="closeSocket">Stop</button>
-
   </div>
 </template>
 
@@ -22,7 +21,8 @@ export default {
       score: 0,
       chart: '',
       chart_data: '',
-      chart_options: ''
+      chart_options: '',
+      avg_sent_min: '',
     }
   },
   created () {
@@ -60,21 +60,22 @@ export default {
         this.socket = io.connect('http://localhost:3001');
 
         this.socket.on('score', (data) => {
-          console.log(data);
+          // console.log(data);
           this.score = data.score;
 
           this.chart.draw(google.visualization.arrayToDataTable([
               ['Label', 'Value'],
               ['Sentiment', this.score]
-            ]), this.chart_options)
+          ]), this.chart_options)
+        })
 
-          // if (data.score > 0) this.positive.unshift(data.tweet + ' !! '+data.score+' !!')
-          // if (data.score < 0) this.negative.unshift(data.tweet + ' !! '+data.score+' !!')
+        this.socket.on('average_min', (data) => {
+          console.log(data)
+          this.avg_sent_min = data
+        })
 
-        });
-      }, (response) => {
+      }, (response) => { });
 
-      });
     },
     closeSocket () {
       this.socket.disconnect()
