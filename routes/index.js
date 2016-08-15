@@ -11,7 +11,7 @@ router
   })
   .post('/', (req, res) => {
 
-    if (req.body.term) stream.open(io, req.body.term)
+    if (req.body.term) stream.open(io, req.body.term) // TODO: on disconnect, stop stream
 
     res.sendStatus(200)
 
