@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "prestart": "cd ./client && npm run build",
     "start": "node ./bin/www"
   },
   "dependencies": {

@@ -1,5 +1,5 @@
-const express = require('express');
-
+const express = require('express')
+const createConnection = require('../middleware/connection')
 const stream = require('../lib/stream.js')
 const io = require('socket.io')()
 
@@ -9,7 +9,7 @@ router
   .get('/', (req, res) => {
     res.sendfile('client/index.html');
   })
-  .post('/', (req, res) => {
+  .post('/', createConnection, (req, res) => {
 
     if (req.body.term) stream.open(io, req.body.term) // TODO: on disconnect, stop stream
 
