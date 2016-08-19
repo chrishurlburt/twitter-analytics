@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="chart_div"></div>
-      <h2>Average Sentiment (Last Minute): {{ avg_sent_min }}</h2>
+      <h2>Average Sentiment (Last 5 Minutes): {{ avg_sent_min }}</h2>
       <input type="text" v-model="term" />
       <button @click="openSocket">Start</button>
       <button @click="closeSocket">Stop</button>
@@ -69,8 +69,8 @@ export default {
           ]), this.chart_options)
         })
 
-        this.socket.on('average_min', (data) => {
-          console.log(data)
+        this.socket.on('average', (data) => {
+          // console.log(data)
           this.avg_sent_min = data
         })
 
